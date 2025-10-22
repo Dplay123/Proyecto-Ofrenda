@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>cruz</title>
+</head>
+<body>
+
+<canvas id="myCanvas">
+    <!--El elemento HTML canvas se puede utilizar para dibujar gráficos a través de 
+        secuencias de comandos (por lo general JavaScript ).-->
+</canvas>
+
+<!-- Aquí va todo el código de three.js -->
+<!-- script type="importmap" importa las librerías necesarias para three.js-->
+
+<script type="importmap">
+    {
+        "imports":{
+            "three": "./js/three.module.js",
+            "three/OrbitControls": "./js/OrbitControls.js"
+        }
+}
+</script>
+<script type="module">
+//🗃️🗃️ Mandar llamar a la librería
+    import * as THREE from 'three';
+    import {OrbitControls} from 'three/OrbitControls';
+    import {RoundedBoxGeometry} from "./js/RoundedBoxGeometry.js";
+    console.log(OrbitControls);
+
+//🕹️🕹️ Renderer - Realiza una conexión entre el código y el canvas
+  var renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById('myCanvas'),
+    antialias: true,
+    alpha: true,
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x6599C2);
+
+  // 🎬 Creando nueva escena - Es el espacio donde se colocan los objetos
+  var scene = new THREE.Scene();
+
+  //🎥🎥 Agregar una cámara de perspectiva
+  var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 2000);
+  camera.position.set(0, 3, 12);
+  scene.add(camera);
+
+  // 🎮 Controles
+  var controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.enablePan = true;
+  controls.enableZoom = true;
+  controls.autoRotate = false;
+
+  // 💡 Luces
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  var luz = new THREE.DirectionalLight(0xffffff, 1);
+  luz.position.set(10, 15, 10);
+  scene.add(luz);
+
+// Espacio para colocar los objetos
+
+
+
+//pozole
+var geometryP = new THREE.CylinderGeometry( 2, 0.6, 1.3, 37 ); 
+var materialP = new THREE.MeshLambertMaterial( {color: 0x2847B5} ); 
+var cylinderP = new THREE.Mesh( geometryP, materialP ); scene.add( cylinderP );
+cylinderP.position.set(3, -2.5, 2);
+
+var geometryPZ = new THREE.CylinderGeometry( 1.9, 0.6, 1.3, 37 ); 
+var materialPZ = new THREE.MeshLambertMaterial( {color: 0xE62E1C} ); 
+var cylinderPZ = new THREE.Mesh( geometryPZ, materialPZ ); scene.add( cylinderPZ );
+cylinderPZ.position.set(3, -2.35, 2);
+
+//pozolemaiz
+var geometrym = new THREE.SphereGeometry( 0.2, 6, 16 ); 
+var materialm = new THREE.MeshLambertMaterial( { color: 0xffff00 } ); 
+var spherem = new THREE.Mesh( geometrym, materialm ); scene.add( spherem );
+spherem.position.set(3, -1.4, 2);
+
+var geometrym2 = new THREE.SphereGeometry( 0.2, 6, 16 ); 
+var materialm2 = new THREE.MeshLambertMaterial( { color: 0xffff00 } ); 
+var spherem2 = new THREE.Mesh( geometrym2, materialm2 ); scene.add( spherem2 );
+spherem2.position.set(3, -1.4, 1);
+
+var geometrym3 = new THREE.SphereGeometry( 0.2, 6, 16 ); 
+var materialm3 = new THREE.MeshLambertMaterial( { color: 0xffff00 } ); 
+var spherem3 = new THREE.Mesh( geometrym3, materialm3 ); scene.add( spherem3 );
+spherem3.position.set(3, -1.4, 3);
+
+var geometrym4 = new THREE.SphereGeometry( 0.2, 6, 16 ); 
+var materialm4 = new THREE.MeshLambertMaterial( { color: 0xffff00 } ); 
+var spherem4 = new THREE.Mesh( geometrym4, materialm4 ); scene.add( spherem4 );
+spherem4.position.set(3.5, -1.4, 2);
+
+var geometrym5= new THREE.SphereGeometry( 0.2, 6, 16 ); 
+var materialm5 = new THREE.MeshLambertMaterial( { color: 0xffff00 } ); 
+var spherem5 = new THREE.Mesh( geometrym5, materialm5 ); 
+scene.add( spherem5 );
+spherem5.position.set(2.3, -1.4, 2);;
+
+
+
+//🎰🎰Rendering y animación
+    requestAnimationFrame(render);
+    function render() {
+
+
+    //🎮🎮Actualización del OrbitControls para generar la suavidad de movimiento
+    controls.update();
+
+    //Llamado para renderizar y volver a llamar a la misma función (render)
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+    }
+
+  // 🔄 Ajuste de pantalla
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+</body>
+</html>

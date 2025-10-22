@@ -1,0 +1,106 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <title>Pan de muerto</title>
+</head>
+<body>
+    
+<canvas id="myCanvas">
+    <!--El elemento HTML canvas se puede utilizar para dibujar gráficos a través de 
+        secuencias de comandos (por lo general JavaScript ).-->
+</canvas>
+
+<!-- Aquí va todo el código de three.js -->
+<!-- script type="importmap" importa las librerías necesarias para three.js-->
+<script type="importmap"> 
+    {
+        "imports":{
+            "three": "./js/three.module.js",
+            "three/OrbitControls": "./js/OrbitControls.js" 
+        }
+}
+</script>
+<script type="module"> 
+//🗃️🗃️ Mandar llamar a la librería
+    import * as THREE from 'three'; 
+    import {OrbitControls} from 'three/OrbitControls';
+    console.log(OrbitControls);
+
+//🕹️🕹️ Renderer - Realiza una conexión entre el código y el canvas
+    var renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById('myCanvas'), antialias: true,
+    });
+    renderer.setPixelRatio(window.decivePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x70707C);
+
+
+// 🎬 Creando nueva escena - Es el espacio donde se colocan los objetos
+    var scene = new THREE.Scene();
+
+//🎥🎥 Agregar una cámara de perspectiva
+    var camera = new THREE.PerspectiveCamera(70,window.innerWidth / window.innerHeight,0.1,2000
+      );
+    scene.add(camera);
+
+    //Settings de la cámara
+    camera.position.set(0, 4, 10);
+
+    // Añadiendo los OrbitControls
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+
+    // Luz
+  const light = new THREE.PointLight(0xffffff, 1, 100);
+  light.position.set(10, 10, 10);
+  scene.add(light);
+
+// Espacio para colocar los objetos
+
+
+// 🔥 Grupo de la vela
+var velaGroup = new THREE.Group();
+
+// Cuerpo de la vela (cilindro)
+var velaGeometry = new THREE.CylinderGeometry(0.1, 0.1, 0.8, 32);
+var velaMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff }); 
+var vela = new THREE.Mesh(velaGeometry, velaMaterial);
+vela.position.y = 0.25; 
+velaGroup.add(vela);
+
+// Mecha (cilindro pequeño)
+var mechaGeometry = new THREE.CylinderGeometry(0.02, 0.02, 0.05, 16);
+var mechaMaterial = new THREE.MeshLambertMaterial({ color: 0x000000 }); 
+var mecha = new THREE.Mesh(mechaGeometry, mechaMaterial);
+mecha.position.y = 0.53; 
+velaGroup.add(mecha);
+
+// Llama (cono amarillo)
+var llamaGeometry = new THREE.ConeGeometry(0.10, 0.50, 20);
+var llamaMaterial = new THREE.MeshLambertMaterial({ color: 0xffd700 }); 
+var llama = new THREE.Mesh(llamaGeometry, llamaMaterial);
+llama.position.y = 0.6; 
+velaGroup.add(llama);
+
+// Posicion de la vela
+velaGroup.position.set(-2, -0.5, 1);
+scene.add(velaGroup);
+
+
+//🎰🎰Rendering y animación
+    requestAnimationFrame(render);
+    function render() {
+
+    //🪄🪄 Animación - 
+
+    //🎮🎮Actualización del OrbitControls para generar la suavidad de movimiento
+    controls.update();
+
+    //Llamado para renderizar y volver a llamar a la misma función (render)
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+    }
+</script>
+</body>
+</html>
