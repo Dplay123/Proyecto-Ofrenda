@@ -1,0 +1,114 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <title>Pan de muerto</title>
+</head>
+<body>
+    
+<canvas id="myCanvas">
+    <!--El elemento HTML canvas se puede utilizar para dibujar gráficos a través de 
+        secuencias de comandos (por lo general JavaScript ).-->
+</canvas>
+
+<!-- Aquí va todo el código de three.js -->
+<!-- script type="importmap" importa las librerías necesarias para three.js-->
+<script type="importmap"> 
+    {
+        "imports":{
+            "three": "./js/three.module.js",
+            "three/OrbitControls": "./js/OrbitControls.js" 
+        }
+}
+</script>
+<script type="module"> 
+//🗃️🗃️ Mandar llamar a la librería
+    import * as THREE from 'three'; 
+    import {OrbitControls} from 'three/OrbitControls';
+    console.log(OrbitControls);
+
+//🕹️🕹️ Renderer - Realiza una conexión entre el código y el canvas
+    var renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById('myCanvas'), antialias: true,
+    });
+    renderer.setPixelRatio(window.decivePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x70707C);
+
+
+// 🎬 Creando nueva escena - Es el espacio donde se colocan los objetos
+    var scene = new THREE.Scene();
+
+//🎥🎥 Agregar una cámara de perspectiva
+    var camera = new THREE.PerspectiveCamera(70,window.innerWidth / window.innerHeight,0.1,2000
+      );
+    scene.add(camera);
+
+    //Settings de la cámara
+    camera.position.set(0, 4, 10);
+
+    // Añadiendo los OrbitControls
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+
+    // Luz
+  const light = new THREE.PointLight(0xffffff, 1, 100);
+  light.position.set(10, 10, 10);
+  scene.add(light);
+
+// Espacio para colocar los objetos
+ // 🫓 Pan de muerto 
+var panGroup = new THREE.Group();
+
+// Base del pan
+var panGeometry = new THREE.SphereGeometry(0.7, 32, 32);
+var panMaterial = new THREE.MeshLambertMaterial({ color: 0xd4a373 });
+var pan = new THREE.Mesh(panGeometry, panMaterial);
+pan.position.set(0, -0.5, 0);
+pan.scale.y = 0.6;
+panGroup.add(pan);
+
+// Bolita del centro
+var bolitaGeometry = new THREE.SphereGeometry(0.20, 32, 32);
+var bolitaMaterial = new THREE.MeshLambertMaterial({ color: 0xb87b4b });
+var bolita = new THREE.Mesh(bolitaGeometry, bolitaMaterial);
+bolita.position.set(0,-0.1, 0);
+panGroup.add(bolita);
+
+// Cruces del pan
+var tiraGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.9, 32);
+var tiraMaterial = new THREE.MeshLambertMaterial({ color: 0xb87b4b });
+
+// Primera tira (horizontal)
+var tira1 = new THREE.Mesh(tiraGeometry, tiraMaterial);
+tira1.rotation.z = 1.57;
+tira1.position.set(0, -0.1, 0);
+panGroup.add(tira1);
+
+// Segunda tira (cruzada)
+var tira2 = new THREE.Mesh(tiraGeometry, tiraMaterial);
+tira2.rotation.z = 1.57;
+tira2.rotation.y = 1.57;
+tira2.position.set(0, -0.1, 0);
+panGroup.add(tira2);
+
+// Grupo
+scene.add(panGroup);
+
+
+//🎰🎰Rendering y animación
+    requestAnimationFrame(render);
+    function render() {
+
+    //🪄🪄 Animación - 
+
+    //🎮🎮Actualización del OrbitControls para generar la suavidad de movimiento
+    controls.update();
+
+    //Llamado para renderizar y volver a llamar a la misma función (render)
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+    }
+</script>
+</body>
+</html>

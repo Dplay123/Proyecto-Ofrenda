@@ -1,0 +1,95 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <title>Práctica 02</title>
+</head>
+<body>
+    
+<canvas id="myCanvas">
+    <!--El elemento HTML canvas se puede utilizar para dibujar gráficos a través de 
+        secuencias de comandos (por lo general JavaScript ).-->
+</canvas>
+
+<!-- Aquí va todo el código de three.js -->
+<!-- script type="importmap" importa las librerías necesarias para three.js-->
+<script type="importmap"> 
+    {
+        "imports":{
+            "three": "./js/three.module.js",
+            "three/OrbitControls": "./js/OrbitControls.js" 
+        }
+}
+</script>
+<script type="module"> 
+//🗃️🗃️ Mandar llamar a la librería
+    import * as THREE from 'three'; 
+    import {OrbitControls} from 'three/OrbitControls';
+    console.log(OrbitControls);
+    import{RoundedBoxGeometry} from './js/RoundedBoxGeometry.js';
+
+//🕹️🕹️ Renderer - Realiza una conexión entre el código y el canvas
+    var renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById('myCanvas'), antialias: true,
+    });
+    renderer.setPixelRatio(window.decivePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x1C91C9);
+
+
+// 🎬 Creando nueva escena - Es el espacio donde se colocan los objetos
+    var scene = new THREE.Scene();
+
+//🎥🎥 Agregar una cámara de perspectiva
+    var camera = new THREE.PerspectiveCamera(70,window.innerWidth / window.innerHeight,0.1,2000
+      );
+    scene.add(camera);
+
+    //Settings de la cámara
+    camera.position.set(0, 4, 10);
+
+    // Añadiendo los OrbitControls
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+
+//Luz
+
+    var li = new THREE.DirectionalLight(0xffffff,.8);
+    li.position.set(1,1,1);
+    scene.add(li);  
+
+// NARANJONAAAS
+
+var naranjaGroup = new THREE.Group();
+
+// Naranja principal
+var naranjaGeometry = new THREE.SphereGeometry(0.30, 32, 32);
+var naranjaMaterial = new THREE.MeshLambertMaterial({ color: 0xffa500 });
+var naranja = new THREE.Mesh(naranjaGeometry, naranjaMaterial);
+naranja.position.set(0, 0, 0);
+naranjaGroup.add(naranja);
+
+// Tallo 
+var talloGeometry = new THREE.CylinderGeometry(0.015, 0.015, 0.1, 6);
+var talloMaterial = new THREE.MeshLambertMaterial({ color: 0x2e8b57 });
+var tallo = new THREE.Mesh(talloGeometry, talloMaterial);
+tallo.position.set(0, 0.3 + 0.05, 0);
+naranjaGroup.add(tallo);
+
+scene.add(naranjaGroup);
+
+
+
+
+// 🎮 Animación
+
+function render() {
+    controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+}
+render();
+
+</script>
+</body>
+</html>

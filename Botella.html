@@ -1,0 +1,122 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <title>Pan de muerto</title>
+</head>
+<body>
+    
+<canvas id="myCanvas">
+    <!--El elemento HTML canvas se puede utilizar para dibujar gráficos a través de 
+        secuencias de comandos (por lo general JavaScript ).-->
+</canvas>
+
+<!-- Aquí va todo el código de three.js -->
+<!-- script type="importmap" importa las librerías necesarias para three.js-->
+<script type="importmap"> 
+    {
+        "imports":{
+            "three": "./js/three.module.js",
+            "three/OrbitControls": "./js/OrbitControls.js" 
+        }
+}
+</script>
+<script type="module"> 
+//🗃️🗃️ Mandar llamar a la librería
+    import * as THREE from 'three'; 
+    import {OrbitControls} from 'three/OrbitControls';
+    console.log(OrbitControls);
+
+//🕹️🕹️ Renderer - Realiza una conexión entre el código y el canvas
+    var renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById('myCanvas'), antialias: true,
+    });
+    renderer.setPixelRatio(window.decivePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x70707C);
+
+
+// 🎬 Creando nueva escena - Es el espacio donde se colocan los objetos
+    var scene = new THREE.Scene();
+
+//🎥🎥 Agregar una cámara de perspectiva
+    var camera = new THREE.PerspectiveCamera(70,window.innerWidth / window.innerHeight,0.1,2000
+      );
+    scene.add(camera);
+
+    //Settings de la cámara
+    camera.position.set(0, 4, 10);
+
+    // Añadiendo los OrbitControls
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+
+    // Luz
+  const light = new THREE.PointLight(0xffffff, 1, 100);
+  light.position.set(10, 10, 10);
+  scene.add(light);
+
+// Espacio para colocar los objetos
+
+
+
+// 🍾 Grupo de la botella
+var botellaGroup = new THREE.Group();
+
+// Cuerpo del vaso (vidrio)
+var cuerpoGeometry = new THREE.CylinderGeometry(0.3, 0.4, 1.5, 32);
+var cuerpoMaterial = new THREE.MeshLambertMaterial({
+  color: 0xcccccc,
+  transparent: true,
+  opacity: 0.4, 
+  side: THREE.DoubleSide
+});
+var cuerpo = new THREE.Mesh(cuerpoGeometry, cuerpoMaterial);
+cuerpo.position.y = 0.10;
+botellaGroup.add(cuerpo);
+
+// Líquido de la botella
+var liquidoGeometry = new THREE.CylinderGeometry(0.28, 0.28, 0.8, 32);
+var liquidoMaterial = new THREE.MeshLambertMaterial({
+  color: 0x8b4513, 
+  transparent: true,
+  opacity: 0.8
+});
+var liquido = new THREE.Mesh(liquidoGeometry, liquidoMaterial);
+liquido.position.y =  0; 
+botellaGroup.add(liquido);
+
+// Cuello de la botella
+var cuelloGeometry = new THREE.CylinderGeometry(0.16, 0.2, 0.8, 32);
+var cuello = new THREE.Mesh(cuelloGeometry, cuerpoMaterial);
+cuello.position.y = 0.80;
+botellaGroup.add(cuello);
+
+// Tapon
+var taponGeometry = new THREE.CylinderGeometry(0.12, 0.12, 0.2, 32);
+var taponMaterial = new THREE.MeshLambertMaterial({ color: 0x3e2723 });
+var tapon = new THREE.Mesh(taponGeometry, taponMaterial);
+tapon.position.y = 1.3;
+botellaGroup.add(tapon);
+
+// Grupo
+botellaGroup.position.set(2, 0, -1.5); 
+scene.add(botellaGroup);
+
+
+//🎰🎰Rendering y animación
+    requestAnimationFrame(render);
+    function render() {
+
+    //🪄🪄 Animación - 
+
+    //🎮🎮Actualización del OrbitControls para generar la suavidad de movimiento
+    controls.update();
+
+    //Llamado para renderizar y volver a llamar a la misma función (render)
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+    }
+</script>
+</body>
+</html>

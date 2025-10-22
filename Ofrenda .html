@@ -1,0 +1,736 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <title> Ofrenda </title>
+</head>
+<body>
+    
+<canvas id="myCanvas">
+    <!--El elemento HTML canvas se puede utilizar para dibujar gráficos a través de 
+        secuencias de comandos (por lo general JavaScript ).-->
+</canvas>
+
+<!-- Aquí va todo el código de three.js -->
+<!-- script type="importmap" importa las librerías necesarias para three.js-->
+<script type="importmap"> 
+    {
+        "imports":{
+            "three": "./js/three.module.js",
+            "three/OrbitControls": "./js/OrbitControls.js" 
+        }
+}
+</script>
+<script type="module"> 
+//🗃️🗃️ Mandar llamar a la librería
+    import * as THREE from 'three'; 
+    import {OrbitControls} from 'three/OrbitControls';
+    console.log(OrbitControls);
+    import{RoundedBoxGeometry} from './js/RoundedBoxGeometry.js'
+
+    import Obj01 from './Objetos para importar/Papel1.js';
+    import Obj02 from './Objetos para importar/Papel2.js';
+    import Obj03 from './Objetos para importar/Papel3.js';
+    import Obj04 from './Objetos para importar/Papel4.js';
+    import Obj05 from './Objetos para importar/Papel5.js';
+    import Obj06 from './Objetos para importar/Papel6.js';
+    import Obj07 from './Objetos para importar/Papel7.js';
+    import Obj08 from './Objetos para importar/Papel8.js';
+    import Obj09 from './Objetos para importar/Papel9.js';
+    import Obj10 from './Objetos para importar/Calavera.js';
+    import Obj11 from './Objetos para importar/Chocotel.js';
+    import Obj12 from './Objetos para importar/Mano con flor.js';
+    import Obj13 from './Objetos para importar/Pan de muerto.js';
+    import Obj14 from './Objetos para importar/Botella.js';
+    import Obj15 from './Objetos para importar/Plato de pollo.js';
+    import Obj16 from './Objetos para importar/Vela.js';
+    import Obj17 from './Objetos para importar/Calabaza.js';
+    import Obj18 from './Objetos para importar/Naranja.js';
+    import Obj19 from './Objetos para importar/Vaso de agua.js';
+    import Obj20 from './Objetos para importar/Caña.js';
+    import Obj21 from './Objetos para importar/Cruz.js';
+    import Obj22 from './Objetos para importar/Pozole.js';
+    import Obj23 from './Objetos para importar/Veladora.js';
+    import Obj24 from './Objetos para importar/Foto 1.js';
+    import Obj25 from './Objetos para importar/Foto 2.js';
+    import Obj26 from './Objetos para importar/Foto 3.js';
+    import Obj27 from './Objetos para importar/Flor.js';
+
+//🕹️🕹️ Renderer - Realiza una conexión entre el código y el canvas
+    var renderer = new THREE.WebGLRenderer({
+    canvas: document.getElementById('myCanvas'), antialias: true,
+    });
+    renderer.setPixelRatio(window.decivePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x007EED);
+
+
+// 🎬 Creando nueva escena - Es el espacio donde se colocan los objetos
+    var scene = new THREE.Scene();
+
+//🎥🎥 Agregar una cámara de perspectiva
+    var camera = new THREE.PerspectiveCamera(70,window.innerWidth / window.innerHeight,0.1,2000
+      );
+    scene.add(camera);
+
+    const size = {
+
+        width: window.innerWidth,
+        height: window.innerHeight,
+
+    }
+
+    const canvas = document.getElementById('myCanvas');
+
+    window.addEventListener('resize', () => {
+
+        size.width = window.innerWidth;
+        size.height = window.innerHeight;
+        
+        camera.aspect= size.width / size.height;
+        camera.updateProjectionMatrix();
+        
+        renderer.setSize(size.width, size.height);
+
+    })  
+
+
+    //Settings de la cámara
+    camera.position.set(0,-125, 30);
+
+//sombras
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+
+    var light = new THREE.DirectionalLight(0xffffff, 1.2);
+    light.position.set(200,-200,100);
+    light.target.position.set(0,0,0);
+    var heplper1 = new THREE.DirectionalLightHelper(light);
+    //scene.add(heplper1);
+    light.castShadow = true;
+    light.shadow.bias = 0.0001 ;
+    light.shadow.mapSize.width = 512*3;
+    light.shadow.mapSize.height = 512*3;
+
+    light.shadow.camera.top = 120;
+    light.shadow.camera.bottom = -120;
+    light.shadow.camera.left = -300;
+    light.shadow.camera.right = 300; 
+    light.shadow.camera.visible = true;
+
+    var directionalHelper = new THREE.CameraHelper(light.shadow.camera);
+    //scene.add(directionalHelper);
+
+    scene.add(light);
+
+   // Luz sobre la vela 1
+    var pnl1 = new THREE.PointLight(0xffb347, 1, 20, 0.8);
+    pnl1.position.set(30, 20, 14);
+    scene.add(pnl1);
+
+   // Luz sobre la vela 2
+    var pnl2 = new THREE.PointLight(0xffcc66, 1, 20, 0.8);
+    pnl2.position.set(30, -20, 14);
+    scene.add(pnl2);
+
+    // Luz sobre la vela 3
+    var pnl3 = new THREE.PointLight(0xffa500, 1, 20, 0.8);
+    pnl3.position.set(-30, -20, 14);
+    scene.add(pnl3);
+
+    // Luz sobre la vela 4
+    var pnl4 = new THREE.PointLight(0xff8c00, 1, 20, 0.8);
+    pnl4.position.set(-30, 20, 14);
+    scene.add(pnl4);
+
+    // Luz sobre la veladora 1
+    var veLuz1 = new THREE.PointLight(0xffc266, 1.5, 18, 1.0);
+    veLuz1.position.set(20, 15, 26); // un poco arriba del objeto
+    scene.add(veLuz1);
+
+    // Luz sobre la veladora 2
+    var veLuz2 = new THREE.PointLight(0xffb347, 1.5, 18, 1.0);
+    veLuz2.position.set(20, -11, 26);
+    scene.add(veLuz2);
+
+    // Luz sobre la veladora 3
+    var veLuz3 = new THREE.PointLight(0xffa64d, 1.5, 18, 1.0);
+    veLuz3.position.set(-20, -11, 26);
+    scene.add(veLuz3);
+
+    // Luz sobre la veladora 4
+    var veLuz4 = new THREE.PointLight(0xff9933, 1.5, 18, 1.0);
+    veLuz4.position.set(-20, 15, 26);
+    scene.add(veLuz4);
+
+    // Añadiendo los OrbitControls
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+
+    //Fondo
+    var loader = new THREE.TextureLoader();
+    var bg1 = loader.load('./Images/Bg1.png');
+    scene.background = bg1;
+
+    // Espacio para colocar los objetos
+    var g1 = new  THREE.BoxGeometry (250,200,.1,1);
+    var m1 = new THREE.MeshLambertMaterial ({
+        color: 0x661499, side: THREE.DoubleSide, 
+    });
+    var mesh01 = new THREE.Mesh(g1,m1);
+    scene.add(mesh01);
+    mesh01.position.set(0,0,0);
+    mesh01.receiveShadow = true;
+
+    //mesa de ofrenda
+    var g2 = new  THREE.BoxGeometry (65,45,10,1);
+    var m2 = new THREE.MeshLambertMaterial ({
+        color: 0x8B4513, side: THREE.DoubleSide
+    }); 
+    var mesh02 = new THREE.Mesh(g2,m2);
+    scene.add(mesh02);
+    mesh02.position.set(0,0,5);
+    mesh02.castShadow = true;
+
+    var g2 = new  THREE.BoxGeometry (45,30,10,1);
+    var m2 = new THREE.MeshLambertMaterial ({
+        color: 0x8B4513, side: THREE.DoubleSide
+    }); 
+    var mesh03 = new THREE.Mesh(g2,m2);
+    scene.add(mesh03);
+    mesh03.position.set(0,0,15);
+    mesh03.castShadow = true;
+
+    var g2 = new  THREE.BoxGeometry (25,15,10,1);
+    var m2 = new THREE.MeshLambertMaterial ({
+        color: 0x8B4513, side: THREE.DoubleSide
+    }); 
+    var mesh04 = new THREE.Mesh(g2,m2);
+    scene.add(mesh04);
+    mesh04.position.set(0,0,25);
+    mesh04.castShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(35,100);
+    var t3 = new THREE.TextureLoader().load('./Images/Flores.jpg');
+    var m3 = new THREE.MeshLambertMaterial({ map:t3 });
+    var mesh05 = new THREE.Mesh(g3,m3);
+    scene.add(mesh05);
+    mesh05.position.set(0,-50,0.1);
+    mesh05.rotation.set(0,0,0);
+    mesh05.receiveShadow = true;
+
+    //mantel
+        //primer nivel
+    var g3 = new  THREE.PlaneGeometry(5,46);
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh06 = new THREE.Mesh(g3,m3);
+    scene.add(mesh06);
+    mesh06.position.set(32.9,0,7.5);
+    mesh06.rotation.set(0,1.57,0);
+    mesh06.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(5,46);
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh06 = new THREE.Mesh(g3,m3);
+    scene.add(mesh06);
+    mesh06.position.set(-32.9,0,7.5);
+    mesh06.rotation.set(0,1.57,0);
+    mesh06.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(66,5)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh06 = new THREE.Mesh(g3,m3);
+    scene.add(mesh06);
+    mesh06.position.set(0,-22.8,7.5);
+    mesh06.rotation.set(1.57,0,0);
+    mesh06.receiveShadow = true;
+    
+    var g3 = new  THREE.PlaneGeometry(66,5)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh06 = new THREE.Mesh(g3,m3);
+    scene.add(mesh06);
+    mesh06.position.set(0,22.8,7.5);
+    mesh06.rotation.set(1.57,0,0);
+    mesh06.receiveShadow = true;
+
+    
+    var g3 = new  THREE.PlaneGeometry(66,46)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh06 = new THREE.Mesh(g3,m3);
+    scene.add(mesh06);
+    mesh06.position.set(0,0,10.1);
+    mesh06.rotation.set(0,0,0);
+    mesh06.receiveShadow = true;
+        
+        //segundo nivel
+
+    var g3 = new  THREE.PlaneGeometry(5,30);
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh07 = new THREE.Mesh(g3,m3);
+    scene.add(mesh07);
+    mesh07.position.set(22.9,0,17.5);
+    mesh07.rotation.set(0,1.57,0);
+    mesh07.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(5,30);
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh08 = new THREE.Mesh(g3,m3);
+    scene.add(mesh08);
+    mesh08.position.set(-22.9,0,17.5);
+    mesh08.rotation.set(0,1.57,0);
+    mesh08.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(46,5)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh09 = new THREE.Mesh(g3,m3);
+    scene.add(mesh09);
+    mesh09.position.set(0,-15.3,17.5);
+    mesh09.rotation.set(1.57,0,0);
+    mesh09.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(46,5)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh10 = new THREE.Mesh(g3,m3);
+    scene.add(mesh10);
+    mesh10.position.set(0,15.3,17.5);
+    mesh10.rotation.set(1.57,0,0);
+    mesh10.receiveShadow = true;
+    
+    var g3 = new  THREE.PlaneGeometry(46,31)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh11 = new THREE.Mesh(g3,m3);
+    scene.add(mesh11);
+    mesh11.position.set(0,0,20.1);
+    mesh11.rotation.set(0,0,0);
+    mesh11.receiveShadow = true;
+
+        //Tercer nivel
+
+    var g3 = new  THREE.PlaneGeometry(5,15);
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide, 
+    });
+    var mesh12 = new THREE.Mesh(g3,m3);
+    scene.add(mesh12);
+    mesh12.position.set(12.9,0,27.5);
+    mesh12.rotation.set(0,1.57,0);
+    mesh12.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(5,15);
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh13 = new THREE.Mesh(g3,m3);
+    scene.add(mesh13);
+    mesh13.position.set(-12.9,0,27.5);
+    mesh13.rotation.set(0,1.57,0);
+    mesh13.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(26,5)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh14 = new THREE.Mesh(g3,m3);
+    scene.add(mesh14);
+    mesh14.position.set(0,-8.3,27.5);
+    mesh14.rotation.set(1.57,0,0);
+    mesh14.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(46,5)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh15 = new THREE.Mesh(g3,m3);
+    scene.add(mesh15);
+    mesh15.position.set(0,15.3,17.5);
+    mesh15.rotation.set(1.57,0,0);
+    mesh15.receiveShadow = true;
+
+    var g3 = new  THREE.PlaneGeometry(25,16)
+    var m3 = new THREE.MeshLambertMaterial({
+        color: 0xffffff, side: THREE.DoubleSide
+    });
+    var mesh16 = new THREE.Mesh(g3,m3);
+    scene.add(mesh16);
+    mesh16.position.set(0,.3,30.1);
+    mesh16.rotation.set(0,0,0);
+    mesh16.receiveShadow = true;
+    
+
+  
+
+    //Objetos importados
+
+    // mano con flor
+
+    var prin = new Obj12({x:0, y:0, z:0});
+    scene.add(prin);
+    prin.position.set(0,5,40);
+    prin.rotation.set(1.57,0,0);
+    prin.scale.set(1,1,1);
+    prin.castShadow = true;
+
+    //Fotos
+
+    var ft1 = new Obj24({x:0, y:0, z:0});
+    scene.add(ft1);
+    ft1.position.set(0,-5,21);
+    ft1.scale.set(.8,.7,.8);
+    ft1.rotation.set(1.57,0,0);
+    ft1.castShadow = true;
+
+    var ft2 = new Obj25({x:0, y:0, z:0});
+    scene.add(ft2);
+    ft2.position.set(-5,-13,10);
+    ft2.scale.set(.7,.7,.7);
+    ft2.rotation.set(1.57,0,0);
+    ft2.castShadow = true;
+
+    var ft3 = new Obj26({x:0, y:0, z:0});
+    scene.add(ft3);
+    ft3.position.set(3,-12,10);
+    ft3.scale.set(.7,.7,.8);
+    ft3.rotation.set(1.57,0,0);
+    ft3.castShadow = true;
+
+    //calavera
+    var calavera = new Obj10({x:0, y:0, z:0});
+    scene.add(calavera);
+    calavera.position.set(-7,-3,29);
+    calavera.scale.set(.5,.5,.5);
+    calavera.rotation.set(1.57,0,0);
+    calavera.castShadow = true;
+
+    var calavera2 = new Obj10({x:0, y:0, z:0});
+    scene.add(calavera2);
+    calavera2.position.set(7,-3,29);
+    calavera2.scale.set(.5,.5,.5);
+    calavera2.rotation.set(1.57,0,0);
+    calavera2.castShadow = true;
+
+    //chocolate
+    var chocolate = new Obj11({x:0, y:0, z:0});
+    scene.add(chocolate);
+    chocolate.position.set(15,-19.5,10);
+    chocolate.scale.set(.5,.5,.5);
+    chocolate.rotation.set(1.57,0,0);
+    chocolate.castShadow = true;
+
+    var chocolate2 = new Obj11({x:0, y:0, z:0});
+    scene.add(chocolate2);
+    chocolate2.position.set(-28,5,10);
+    chocolate2.scale.set(.5,.5,.5);
+    chocolate2.rotation.set(1.57,0,0);
+    chocolate2.castShadow = true;
+
+    //Panes de Muerto
+    var P1 = new Obj13({x:0, y:0, z:0});
+    scene.add(P1);
+    P1.position.set(10,-11.5,23);
+    P1.scale.set(4,4,4);
+    P1.rotation.set(1.57,0,0);
+    P1.castShadow = true;
+
+    var P2 = new Obj13({x:0, y:0, z:0});
+    scene.add(P2);
+    P2.position.set(-18,-19.5,13);
+    P2.scale.set(4,4,4);
+    P2.rotation.set(1.57,0,0);
+    P2.castShadow = true;
+
+    //Caña
+    var ca1 = new Obj20({x:0, y:0, z:0});
+    scene.add(ca1);
+    ca1.position.set(-25,-8,13);
+    ca1.scale.set(1,1,1);
+    ca1.rotation.set(1.57,0.875,0);
+    ca1.castShadow = true;
+
+    var ca2 = new Obj20({x:0, y:0, z:0});
+    scene.add(ca2);
+    ca2.position.set(22,-12,22);
+    ca2.scale.set(1,1,1);
+    ca2.rotation.set(1.57,-0.875,0);
+    ca2.castShadow = true;
+
+   
+
+    //naranja
+    var na1 = new Obj18({x:0, y:0, z:0});
+    scene.add(na1);
+    na1.position.set(-7,-12,22);
+    na1.scale.set(5,5,5);
+    na1.rotation.set(1.57,0,0);
+    na1.castShadow = true;
+
+    var na2 = new Obj18({x:0, y:0, z:0});
+    scene.add(na2);
+    na2.position.set(18,-2,22);
+    na2.scale.set(5,5,5);
+    na2.rotation.set(1.57,0,0);
+    na2.castShadow = true;
+
+    //Clabaza
+    var cal1 = new Obj17({x:0, y:0, z:0});
+    scene.add(cal1);
+    cal1.position.set(-28,-5,12);
+    cal1.scale.set(3,3,3);
+    cal1.rotation.set(1.57,0,0);
+    cal1.castShadow = true;
+
+    var cal1 = new Obj17({x:0, y:0, z:0});
+    scene.add(cal1);
+    cal1.position.set(18,5,22);
+    cal1.scale.set(3,3,3);
+    cal1.rotation.set(1.57,0,0);
+    cal1.castShadow = true;
+
+    //pollo
+    var po1 = new Obj15({x:0, y:0, z:0});
+    scene.add(po1);
+    po1.position.set(-14,-11,20);
+    po1.scale.set(3,3,3);
+    po1.rotation.set(1.57,0,0);
+    po1.castShadow = true;
+
+    var po2 = new Obj15({x:0, y:0, z:0});
+    scene.add(po2);
+    po2.position.set(28,-11,10);
+    po2.scale.set(3,3,3);
+    po2.rotation.set(1.57,0,0);
+    po2.castShadow = true;
+
+    //Pozole
+    var P1 = new Obj22({x:0, y:0, z:0});
+    scene.add(P1);
+    P1.position.set(23,3,17);
+    P1.scale.set(2,2,2);
+    P1.rotation.set(1.57,0,0);
+    P1.castShadow = true;
+
+    var P2 = new Obj22({x:0, y:0, z:0});
+    scene.add(P2);
+    P2.position.set(-25,2,27);
+    P2.scale.set(2,2,2);
+    P2.rotation.set(1.57,0,0);
+    P2.castShadow = true;
+
+    //Vaso
+    var va1 = new Obj19({x:0, y:0, z:0});
+    scene.add(va1);
+    va1.position.set(-18,10,20);
+    va1.scale.set(4,4,4);
+    va1.rotation.set(1.57,0,0);
+    va1.castShadow = true;
+
+    var va2 = new Obj19({x:0, y:0, z:0});
+    scene.add(va2);
+    va2.position.set(28,10,10);
+    va2.scale.set(4,4,4);
+    va2.rotation.set(1.57,0,0);
+    va2.castShadow = true;
+
+    //Botellas
+    var bo1 = new Obj14({x:0, y:0, z:0});
+    scene.add(bo1);
+    bo1.position.set(24,-19.5,13);
+    bo1.scale.set(4,4,4);
+    bo1.rotation.set(1.57,0,0);
+    bo1.castShadow = true;
+
+    var bo2 = new Obj14({x:0, y:0, z:0});
+    scene.add(bo2);
+    bo2.position.set(-24,-19.5,13);
+    bo2.scale.set(4,4,4);
+    bo2.rotation.set(1.57,0,0);
+    bo2.castShadow = true;
+
+    //velas
+    var v1 = new Obj16({x:0, y:0, z:0});
+    scene.add(v1);
+    v1.position.set(30,20,10);
+    v1.scale.set(4,4,4);
+    v1.rotation.set(1.57,0,0);
+    v1.castShadow = true;
+
+    var v2 = new Obj16({x:0, y:0, z:0});
+    scene.add(v2);
+    v2.position.set(30,-20,10);
+    v2.scale.set(4,4,4);
+    v2.rotation.set(1.57,0,0);
+    v2.castShadow = true;
+
+    var v3 = new Obj16({x:0, y:0, z:0});
+    scene.add(v3);
+    v3.position.set(-30,-20,10);
+    v3.scale.set(4,4,4);
+    v3.rotation.set(1.57,0,0);
+    v3.castShadow = true;
+
+    var v4 = new Obj16({x:0, y:0, z:0});
+    scene.add(v4);
+    v4.position.set(-30,20,10);
+    v4.scale.set(4,4,4);
+    v4.rotation.set(1.57,0,0);
+    v4.castShadow = true;
+
+    //veladoras
+
+    var ve1 = new Obj23({x:0, y:0, z:0});
+    scene.add(ve1);
+    ve1.position.set(20,15,23);
+    ve1.scale.set(1,1,1);
+    ve1.rotation.set(1.57,0,0);
+    ve1.castShadow = true;
+
+    var ve2 = new Obj23({x:0, y:0, z:0});
+    scene.add(ve2);
+    ve2.position.set(-20,-11,23);
+    ve2.scale.set(1,1,1);
+    ve2.rotation.set(1.57,0,0);
+    ve2.castShadow = true;
+
+    var ve3 = new Obj23({x:0, y:0, z:0});
+    scene.add(ve3);
+    ve3.position.set(20,-11,23);
+    ve3.scale.set(1,1,1);
+    ve3.rotation.set(1.57,0,0);
+    ve3.castShadow = true;
+
+    var ve4 = new Obj23({x:0, y:0, z:0});
+    scene.add(ve4);
+    ve4.position.set(-20,15,23);
+    ve4.scale.set(1,1,1);
+    ve4.rotation.set(1.57,0,0);
+    ve4.castShadow = true;
+
+    //Arco de flores
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(0,0,80);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(-15,0,75);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(15,0,75);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(-30,0,65);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(30,0,65);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(-40,0,50);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(40,0,50);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(-45,0,35);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(45,0,35);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(-50,0,20);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(50,0,20);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(-50,0,5);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+    var flo1 = new Obj27({x:0, y:0, z:0});
+    scene.add(flo1);
+    flo1.position.set(50,0,5);
+    flo1.scale.set(2,2,2);
+    flo1.rotation.set(1.57,0,0);
+    flo1.castShadow = true;
+
+
+//🎰🎰Rendering y animación
+    requestAnimationFrame(render);
+    function render() {
+
+    //🪄🪄 Animación - 
+
+    //🎮🎮Actualización del OrbitControls para generar la suavidad de movimiento
+    controls.update();
+
+    //Llamado para renderizar y volver a llamar a la misma función (render)
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+    }
+</script>
+</body>
+</html>
